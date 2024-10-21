@@ -1,0 +1,29 @@
+
+
+services:
+  app:
+    build:
+      context: .
+    command: > 
+      sh -c "python manage.py migrate&&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/src
+      - ./data/web:/vol/web
+    depends_on:
+      - db
+  db:
+    image: postgres:16.4
+    ports:
+      - "5433:5432"
+    volumes:
+      - Django_Rest-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=Django_Rest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=aminkhm
+
+volumes:
+  Django_Rest-data:
