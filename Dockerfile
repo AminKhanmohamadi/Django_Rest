@@ -1,12 +1,16 @@
-FROM hemanhp/djbase:5.0
+FROM python:3.11-alpine
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
 COPY ./requirements /requirements
 COPY ./scripts /scripts
 COPY ./src /src
 
-WORKDIR src
+WORKDIR /src
 EXPOSE 8000
-RUN /py/bin/pip install -r /requirements/development.txt
+RUN python -m pip install --upgrade pip && \
+    pip install -r /requirements/development.txt
 
 RUN chmod -R +x /scripts && \
     mkdir -p /vol/web/static && \
